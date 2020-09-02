@@ -28,7 +28,8 @@ public class FooDataAccess extends DataAccess<Foo> {
             return new Foo(resultSet.getInt("foo_id"),
                     resultSet.getInt("user_id"),
                     resultSet.getString("payload"),
-                    resultSet.getObject("created", Date.class).getTime());
+                    resultSet.getObject("created", Date.class).getTime(),
+                    resultSet.getInt("total"));
         }
     }
 
@@ -47,7 +48,31 @@ public class FooDataAccess extends DataAccess<Foo> {
         long created = System.currentTimeMillis();
         int fooId = insert("INSERT INTO foo (user_id, payload, created) VALUES (?,?,?)",
                 userId, payload, new Date(created));
-        return new Foo(fooId, userId, payload, created);
+        return new Foo(fooId, userId, payload, created, 1);
+    }
+
+    /**
+     * Delete a users foo row.
+     *
+     * @param userId user to match.
+     * @param fooId  primary key of the foo.
+     * @return true if a row was deleted.
+     */
+    public boolean deleteFoo(int userId, int fooId) {
+        // TODO: Please implement this one
+        return execute("DELETE FROM foo WHERE user_id = ? AND foo_id = ?", userId, fooId) > 0;
+    }
+
+    /**
+     * Update the total column of a foo.
+     *
+     * @param userId   user to match.
+     * @param fooId    primary key of the foo.
+     * @param newTotal value to set the column to.
+     * @return true if a row was updated.
+     */
+    public boolean updateTotal(int userId, int fooId, int newTotal) {
+        return execute("UPDATE foo SET total = ? WHERE user_id = ? AND foo_id = ?", newTotal, userId, fooId) > 0;
     }
 
     /**

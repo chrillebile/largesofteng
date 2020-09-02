@@ -13,6 +13,7 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 public class FooResourceTest extends BaseResourceTest {
@@ -98,5 +99,36 @@ public class FooResourceTest extends BaseResourceTest {
                 .request()
                 .get(FOO_LIST);
         assertEquals("tests", testsFoos.get(0).getPayload());
+    }
+
+    @Test
+    public void updateFoo() {
+        Foo foo = target("foo")
+                .request()
+                .post(Entity.json(Collections.singletonMap("payload", "new foo")), Foo.class);
+        target("foo")
+                .path(Integer.toString(foo.getId()))
+                .path("total")
+                .path(Integer.toString(42))
+                .request()
+                .post(Entity.json(null));
+        List<Foo> foos = target("foo").request().get(new GenericType<List<Foo>>() {
+        });
+        assertEquals(42, foos.get(0).getTotal());
+    }
+
+    @Test
+    public void deleteFoo() {
+        Foo foo = target("foo")
+                .request()
+                .post(Entity.json(Collections.singletonMap("payload", "new foo")), Foo.class);
+        target("foo")
+                .path(Integer.toString(foo.getId()))
+                .request()
+                .delete();
+        List<Foo> foos = target("foo").request().get(new GenericType<List<Foo>>() {
+        });
+        // TODO: please finish the implementation with an assertion on foos
+        assertFalse(foos.contains(foo));
     }
 }
