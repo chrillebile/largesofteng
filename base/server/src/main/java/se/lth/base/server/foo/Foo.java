@@ -12,6 +12,7 @@ public class Foo {
     private final int userId;
     private final String payload;
     private final long created;
+    private final int total = 3;
 
     public Foo(int id, int userId, String payload, long created) {
         this.id = id;

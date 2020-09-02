@@ -31,6 +31,7 @@ base.fooController = function() {
             const d = viewModel.foo.createdDate;
             tds[1].textContent = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
             // TODO: Add stuff from lab 1 here
+            tds[2].textContent = '3'
         };
     };
 

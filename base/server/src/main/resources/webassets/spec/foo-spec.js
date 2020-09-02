@@ -48,7 +48,7 @@ describe('fooController', function() {
     });
 
     // Change here for lab 1
-    xit('should have total in table', function(done) {
+    it('should have total in table', function(done) {
         const foosPromise = Promise.resolve([foos[0]]);
         spyOn(base.rest, 'getFoos').and.returnValue(foosPromise);
         controller.load();
